@@ -1,0 +1,1387 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"cate",
+				"$categorias〔variable〕"
+			],
+			[
+				"P",
+				"PRODUCTO_DISPONIBLE〔constant〕"
+			],
+			[
+				"Usu",
+				"USUARIO_VERIFICADO〔constant〕"
+			],
+			[
+				"Us",
+				"USUARIO_NO_VERIFICADO〔constant〕"
+			],
+			[
+				"Prod",
+				"PRODUCTO_NO_DISPONIBLE〔constant〕"
+			],
+			[
+				"U",
+				"USUARIO_REGULAR〔constant〕"
+			],
+			[
+				"USU",
+				"USUARIO_NO_VERIFICADO〔constant〕"
+			],
+			[
+				"belo",
+				"belongsToMany〔function〕"
+			],
+			[
+				"US",
+				"USUARIO_VERIFICADO〔constant〕"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "database/factories/UserFactory.php",
+			"settings":
+			{
+				"buffer_size": 1136,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Models/User.php",
+			"settings":
+			{
+				"buffer_size": 1448,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "database/factories/CategoryFactory.php",
+			"settings":
+			{
+				"buffer_size": 551,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "database/factories/ProductFactory.php",
+			"settings":
+			{
+				"buffer_size": 946,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "database/factories/TransactionFactory.php",
+			"settings":
+			{
+				"buffer_size": 800,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "database/seeders/DatabaseSeeder.php",
+			"settings":
+			{
+				"buffer_size": 1101,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".env",
+			"settings":
+			{
+				"buffer_size": 947,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "\n/**\n*   \tLIMPIAR LA BASE DE DATOS\n*/\nSET FOREIGN_KEY_CHECKS = 0;\ndrop table if exists account;\ndrop table if exists account_category;\ndrop table if exists account_type;\ndrop table if exists account_volatility;\ndrop table if exists accounting_period;\ndrop table if exists binary_file;\ndrop table if exists book_entry;\ndrop table if exists category;\ndrop table if exists currency;\ndrop table if exists debt;\ndrop table if exists hashtag;\ndrop table if exists multimedia_file;\ndrop table if exists person;\ndrop table if exists product;\ndrop table if exists record;\ndrop table if exists record_hashtag;\ndrop table if exists record_multimedia_file;\ndrop table if exists user;\nSET FOREIGN_KEY_CHECKS = 1;\n\n\n\n/*Recuperar la persona asociada al usuario logueado*/\nselect *\n  from person\n where user_id = 1\n\n\n/*\n* agregar record\n*/\nINSERT INTO `orgadi_31_dev`.`record` \n\t\t\t (`name`, \n\t\t\t\t`description`             , \n\t\t\t\t`date`               , \n\t\t\t\t`quantity`, \n\t\t\t\t`unit_price`, \n\t\t\t\t`discount`, \n\t\t\t\t`total`, \n\t\t\t\t`currency_change`, \n\t\t\t\t`total_default_currency`, \n\t\t\t\t`order`, \n\t\t\t\t`product_id`, \n\t\t\t\t`category_id`) \nVALUES ( \n\t\t\t\t'Limitleess', \n\t\t\t\t'Template web', \n\t\t\t\t'2020-08-28 01:13:41', \n\t\t\t\t'1', \n\t\t\t\t'60322',\n\t\t\t\t'0', \n\t\t\t\t'60322', \n\t\t\t\t'1.00000', \n\t\t\t\t'60322', \n\t\t\t\t'1', \n\t\t\t\t'1', \n\t\t\t\t'0');\n/*\n* insertar producto\n*/\nINSERT INTO `orgadi_31_dev`.`product` ( `name`, `description`, `quantity`, `inventary`) VALUES ( 'Limitless', 'Plantilla web', '1', 'Y');\n/*\n* insertar categoria de record\n*/\n/*\n* insertar book entry\n*/\n/*debe*/\nINSERT INTO `orgadi_31_dev`.`book_entry` ( `total_debit`, `total_credit`, `exchange_rate`, `account_id`, `record_id`) VALUES ( '60322', '0', '1', '1', '1');\n/*haber*/\nINSERT INTO `orgadi_31_dev`.`book_entry` ( `total_debit`, `total_credit`, `exchange_rate`, `account_id`, `record_id`) VALUES ( '0', '60322', '1', '0', '1');\n* actualizar cuenta\n*/\nUPDATE `orgadi_31_dev`.`account` SET `total_debit`='0', `total_credit`='73979' WHERE (`account_id`='0');\nUPDATE `orgadi_31_dev`.`account` SET `total_debit`='73979', `total_credit`='0' WHERE (`account_id`='1');\n\n\n\n\n/**\n* RECORDS DEL DIA\n*/\nselect rec.name, rec.date, rec.total\n  from record rec\n  join category cat\n    on rec.category_id = cat.category_id\n where cat.person_id = 2\n order by rec.date asc \n\n\n\n\n\n/**\n* Cuentas de la persona logueada\n*/\nselect acc.name, \n\t   acc.total_debit,\n       acc.total_credit\n  from account acc\n  join account_category acat\n    on acc.account_category_id = acat.account_category_id\n where acat.person_id = 2\n\n\n/**\n* RECORDS DEL DIA\n*/\nselect rec.name,\n\t\t\t ben.total_debit,\n\t\t\t ben.total_credit,\n\t\t\t case acc.account_type_id \n\t\t\t\twhen 4 then 'activo'\n\t\t\t  when 5 then 'pasivo'\n        end as 'tipo'\n  from record rec\n  join book_entry ben\n    on rec.record_id = ben.record_id\n  join account acc \n    on acc.account_id = ben.account_id\n where acc.account_id = 1\n order by rec.date desc, rec.`order` desc\n",
+			"settings":
+			{
+				"buffer_size": 2920,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "guess_net_24  RDKC2SgU88HbXz\nguess_net_25  RDKC2SgU88HbXz\n\n\n2.4 PPLz69P  NYa4TrVS8BmZslLwAIGYB (celular)\n5   Czs3ZiR  ktu8VIWCJDiYEFl4niLUQ (pc)\n52  tXe2wc   tvXdB8Gpyyc0fjMRlkWFV (celulares)\n\n\n\n",
+			"settings":
+			{
+				"buffer_size": 195,
+				"line_ending": "Windows",
+				"name": "guess_net_24  RDKC2SgU88HbXz"
+			}
+		},
+		{
+			"contents": "100 medicina\n75 cuadernos\n80 pan\n500 renta de lidia\n1000 mueble\n2400 colegiatura\n\n4155\n\n\n\n",
+			"settings":
+			{
+				"buffer_size": 90,
+				"line_ending": "Windows",
+				"name": "100 medicina"
+			}
+		},
+		{
+			"contents": "9\n10\n11\n12\n",
+			"settings":
+			{
+				"buffer_size": 11,
+				"line_ending": "Windows",
+				"name": "9"
+			}
+		},
+		{
+			"contents": "http://luchoorlando.blogspot.co.uk/2016/05/el-codigo-fuente-de-la-famosa-ave-de.html\nhttps://courses.edx.org/register?course_id=course-v1%3AGalileoX%2BCTec001x%2B2T2016&enrollment_action=enroll&email_opt_in=true\n\nzzz\nhttps://es.pornhub.com/view_video.php?viewkey=ph59a7a3a4c3966\nhttps://es.pornhub.com/view_video.php?viewkey=ph593d7bf51622b\nhttps://es.pornhub.com/view_video.php?viewkey=ph5988e20274454\nhttp://www.youporn.com/watch/7946359/fancy-dressed-blonde-gets-fucked-like-a-whore/\nhttps://es.redtube.com/282321\nhttps://es.redtube.com/2658976\nhttps://es.redtube.com/4270371\nhttps://es.redtube.com/2802599\nhttps://es.redtube.com/2829226\nhttps://es.redtube.com/2817966\nhttps://es.redtube.com/2713734\nhttps://es.chaturbate.com/tightcherrybunny/\nhttps://es.chaturbate.com/anabelleleigh/\nhttps://es.chaturbate.com/ms_tanya/\nhttps://es.chaturbate.com/sunny_delight/\nhttps://es.chaturbate.com/indiansweety/\nhttps://es.chaturbate.com/sexyassistant_/\nhttps://es.chaturbate.com/valerymont_/\nhttps://es.chaturbate.com/ashlyeroberts/\nhttps://es.chaturbate.com/barbiedoll1313/\nhttps://es.chaturbate.com/mary_lace/\nhttps://es.chaturbate.com/ramonatorres/\nhttps://es.chaturbate.com/its_lana/\nhttps://es.chaturbate.com/seductive__girl/\nhttps://es.chaturbate.com/ivykittyxxx/\n",
+			"file": "/D/Dropbox/Dropbox/links.txt",
+			"file_size": 1356,
+			"file_write_time": 131955050577302929,
+			"settings":
+			{
+				"buffer_size": 1264,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Mi recuerdo más feliz \n\tun cumpleaños donde toda mi familia me canto las mañanitas\nMi recuerdo más triste \n\tcuando fallecio mi tio\nQue diría de mi, mi yo de 7 años \n\tcreo que esperaria que fuera mas de lo que soy\nQue diría de mi, mi yo de 70 años \n\tme preocupo por cosas sin importancia\nQué significa para mi mi existencia \n\tpoder evolucionar y con ello llegar a la autorealizacion\nCómo aprovecho la vida? \n\ttrato de enfocarme en el aqui y ahora, intento disfrutar las nuevas experiencias que hago\n\tintento hacer algo nuevo \nQué me hace feliz \n\tuna cancion que me guste,}\n\tun dia nubloso pero soleado\n\nQué cosas me dan rabia\n\tinjusticias\n\tfavoritismo\n\tno poder explicarme (no rabia, frustracion)\n\tmaltrato a los animales\nSi tuviera que darle un con0sejo a alguien, le diría..\n\tno pienses tanto las cosas, hazlo ya\n\taprende a quererte a ti mismo",
+			"settings":
+			{
+				"buffer_size": 844,
+				"line_ending": "Windows",
+				"name": "Mi recuerdo más feliz"
+			}
+		},
+		{
+			"contents": "================================\n<===== ver records por cuenta =========\n\nbegin;\n\nSET @id := '2';\nselect bicue.id_cuenta,\n\t\t\t cue.nombre cuenta,\n\t\t\t bicue.id_asiento_contable,\n\t\t\t asic.nombre,\n\t\t\t (bicue.suma_haber-bicue.suma_debe) operacion,\n\t\t\t (bicue.total_haber-bicue.total_debe) total\n  from bitacora_cuenta bicue\n  LEFT JOIN cuenta cue \n    on bicue.id_cuenta = cue.id\n  LEFT JOIN cuenta_asiento ctasi\n    on bicue.id_asiento_contable = ctasi.id\n  LEFT JOIN asiento_contable asic\n    on ctasi.id_asiento_contable = asic.id\n where bicue.id_cuenta = @id;\nend;\n\n\n crear cuentas de \n -activos\n \t-inventario\n -gastos\n \t-gastos\n -ingresos\n \t-ingresos\n -capital\t\n \t-capital\n -ctas x cobrar\n -ctas x pagar\n \t-pasivos\n\n\n\n====CREAR ASIENTO CONTABLE==\n\n*crear asiento agrupador\n\t\t\t*agrepar producto\n\t\t\t*agregar categoria\n*agregar asiento_contable\n*agregar cuenta_asiento (al menos 2)\n*agregar bitacora cuenta (al menos 2)\n*actualizar cuenta\n\n\n",
+			"settings":
+			{
+				"buffer_size": 938,
+				"line_ending": "Windows",
+				"name": "================================"
+			}
+		},
+		{
+			"contents": "composer global require laravel/installer -- indicamos a composer que necesitamos laravel\nlaravel new myapp -- crear un nuevo proyecto laravel\nphp artisan serve -- levanta un servidor con nuestro proyecto\nphp artisan make:model Article -m --crea un nuevo model \n\n//hay que agregar Schema::defaultStringLength(191) en appserviceprovider.php   use Illuminate\\Support\\Facades\\Schema; en boot()\n\n77 Laravel\\Passport\\PassportServiceProvider::class\n\nphp artisan migrate --crear migracion desde el codigo a la base de datos\n\nphp artisan make:seeder ArticlesTableSeeder -- creamos un seeder para llenar la tabla con datos dummy\n\nphp artisan db:seed --class=ArticlesTableSeeder --corremos el seeder que llena la tabla\n\nphp artisan db:seed --hace el llenado de todas las tablas en el archivo databaseseeder.php\n\nphp artisan make:controller ArticleController --crea un controller\n\n\n\n//crear una migracion\nphp artisan make:migration create_users_table\n\n//correr una migracionb\nphp artisan migrate\n\n//correr una sola migracion\nphp artisan migrate --path=/database/migrations/2020_05_17_173401_create_accounts_table.php\n\n//crear un modelo\nphp artisan make:model Orgadi/Account/Model/AccountType\n\n//crear un provider\nphp artisan make:provider RiakServiceProvider\n\n//crear controller\nphp artisan make:controller ArticleController\n\n//correr despues dehacer un refresh\nphp artisan passport:install\n\n\n\n//account volatility\nINSERT INTO `orgadi_dev`.`account_volatilities` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('1', 'Real', 'para cuentas que permanecen', NULL, NULL);\nINSERT INTO `orgadi_dev`.`account_volatilities` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('2', 'Nominal', 'Para cuentas que son volatiles', NULL, NULL);\n\n\nINSERT INTO `orgadi_dev`.`account_types` (`id`, `name`, `description`, `type`, `created_at`, `updated_at`) VALUES ('1', 'Activo', 'Cuentas de activos', 'A', NULL, NULL);\nINSERT INTO `orgadi_dev`.`account_types` (`id`, `name`, `description`, `type`, `created_at`, `updated_at`) VALUES ('2', 'Pasivo', 'Cuentas de pasivo', 'P', NULL, NULL);\nINSERT INTO `orgadi_dev`.`account_types` (`id`, `name`, `description`, `type`, `created_at`, `updated_at`) VALUES ('3', 'Capital', 'Cuentas de capital', 'C', NULL, NULL);\n\n\nINSERT INTO `orgadi_dev`.`currencies` (`id`, `name`, `country`, `symbol`, `created_at`, `updated_at`) VALUES ('1', 'Peso', 'Mexico', '$', NULL, NULL);\n\nINSERT INTO `orgadi_dev`.`pay_types` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('1', 'Efectivo', 'pagos en efectivo', NULL, NULL);\n\n\n\n\n\nselect acc.name cuenta,\n\t\t\t cat.`name` categoria,\n       rec.dateup,\n\t\t\t pro.`name` producto,\n\t\t\t ((cast(bita.sum_debe as signed) - cast(bita.sum_haber as signed))/100) as gasto,\n\t\t\t ((cast(bita.total_debe as signed) - cast(bita.total_haber as signed))/100) as balance\n  from account_bitacories bita\n  join accounting_entries ae\n    on ae.id = bita.accounting_entry\n\tjoin records rec \n    on rec.id = ae.record_id\n\tjoin products pro \n    on pro.id = rec.product_id\n\tjoin categories cat \n    on cat.id = rec.category_id\n\tjoin accounts acc \n    on acc.id = bita.account_id\n where bita.account_id = 1 -- efectivo\n order by rec.dateup desc, rec.order desc\n\n\nselect gr.id,\n\t\t\t gr.name,\n\t     gr.description,\n\t\t\t gr.total_debe as importe,\n\t\t\t gr.dateup\n  from groupers gr\n order by gr.dateup desc\n\n\nselect sum(cast(total_debe as signed)) ss,\n\t\t\t sum(cast(total_haber as signed)) ff,\n\t\t\t  (sum(cast(total_debe as signed) - cast(total_haber as signed))/100) as balance \n  from accounts\n\n\n\n\n\n{\n\t\"name\": \"didi a la casa\",\n\t\"description\": \"didi que tome de la casa de judith a mi casa\",\n\t\"date\":\"2019-11-26T01:00:00-06:00\",\n\t\"records\": [{\n\t\t\"type\": \"C\",\n\t\t\"product\":\"gqj7DpRlpRvwo80\",\n\t\t\"category\":\"lOoxbvMpOEeymaw\",\n\t\t\"name\":\"Didi a la casa\",\n\t\t\"description\": \"didi que tome de la casa de judith a mi casa\",\n\t\t\"date\":\"2019-11-26T01:00:00-06:00\",\n\t\t\"quantity\":1,\n\t\t\"unit_price\":102.50,\n\t\t\"discount\": \"0\",\n\t\t\"total\": 102.50,\n\t\t\"order\": 2,\n\t\t\"accounts\": [{\n\t\t\t\"account\":\"L7jkvJMq9MVaWQr\",\n\t\t\t\"total_debe\": 0,\n\t\t\t\"total_haber\": 102.50,\n\t\t\t\"tipo_cambio\": 1\n\t\t},{\n\t\t\t\"account\":\"enxO1qMWvEjzDPl\",\n\t\t\t\"total_debe\": 102.50,\n\t\t\t\"total_haber\": 0,\n\t\t\t\"tipo_cambio\": 1\n\t\t}]\n\t}]\n} \n\n",
+			"settings":
+			{
+				"buffer_size": 4236,
+				"line_ending": "Windows",
+				"name": "composer global require laravel/installer -- indic"
+			}
+		},
+		{
+			"file": "/D/Dropbox/Dropbox/proyectos/orgaditest/resources/views/app/account.twig",
+			"settings":
+			{
+				"buffer_size": 24267,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Piera\n\t->Siento que me estanque debido a la cuerentena\n\t->me siento mal por mi familia, quisiera ayudarlos\n\t->d es un tema cada vez mas irrelevante\n\t->tengo carro y organice mi lista de nunca jamas\n\t->estoy trabajando en mi proyecto de gastos personales\n\t->crei que la cuarentena seria temporal por lo que me negaba a adaptarme\n\t->ahora me estoy adaptando un poco mas\n\t->me da miedo manejar\n\t->me falta iniciativa\n\t->terreno \n\t->me da pena que oigan mi musica\n\t->no me gusta que quieran disponer de mi tiempo\n\t",
+			"settings":
+			{
+				"buffer_size": 510,
+				"line_ending": "Windows",
+				"name": "Piera"
+			}
+		},
+		{
+			"contents": "g3*F6iGmO\n\nJuan1323..\n\n\nphp artisan passport:install",
+			"settings":
+			{
+				"buffer_size": 52,
+				"line_ending": "Windows",
+				"name": "g3*F6iGmO"
+			}
+		},
+		{
+			"contents": "==cuentas por cobrar==\n1200 subgeins\n 800 diana\n1500 Laura\n\n\n==cuentas por pagar==\n18100 jorge\n 5000 monitor ya lo pague\n 2500 xbox\n  600 bocina motoz\n 4000 laptop vaio\n 2000 moto z\n 4000 celular lg g6\n 4500 xbox one\n\n33 220 laptop\n13 000 pagados\n\n==sueld==\n36 750\n 2 000 sams\n 6 000 honda civic\n 8 000 a la tarjeta\n 5 000 tanda\n 1 500 tanda\n 5 000 mama\n 2 000 papa\n   500 internet\n\n\n==inventario==\n 2 500 silla\n13 000 laptop\n 2 500 audifonos\n   200 monitor\n 1 700 caja delorean\n   600 teclado blanco\n   700 ipod\n 2 500 ipad air\n 1 300 bocinas\n   600 audifonos sony negros\n20 000 civic",
+			"settings":
+			{
+				"buffer_size": 585,
+				"line_ending": "Windows",
+				"name": "==cuentas por cobrar=="
+			}
+		},
+		{
+			"contents": "quien soy?\nsoy un joven de 26 años que actualmente esta trabajando como desarrollador de software \nsoy hijo de juan gabriel moreno y silvia briseño de la rosa\nme considero un amante de la tecnologia pero sin olvidar que todos tenemos una parte humana.\n\nroles:\n\t>empleado\n\t\tsoy una desarrollador de software que actualmente se siente un poco frustrado con su trabajo\n\t>hijo\n\t\tquiero darle a mis padres todo lo que les haga falta, es decir no descuidarlos\n\t>novio\n\t\ttengo una relacion con judith la cual lleva varios años\n\t>hermano\n\t>estudiante\n\n\ngustos\n\t>me gusta casi todo tipo de musica, creo que eso de enfrascarse en un solo genero nos hacer perdernos todo el panorama\nmiedos\n\t->tengo miedo de manejar por eso es que he pospuesto tanto eso\n\t->no hago muchas cosas por miedo al que diran, mas aqui en la casa\n\t\n\nFue un sueño que queria que pasara pero no estaba seguro de las consecuencias que me podria traer, creo que\ndeseaba que pasara pero a la vez no, ya que es algo muy fuerte de lo que no medi las consecuencias y lo que \nme podria afectar a nivel emocional, no he podido concentrarme en estos dias, estoy distraido no dejo de pensar \nen ese sueño. Estoy molesto conmigo porque me atrevi a hacer ese sueño, estaba muy conciente de lo que hacia\ny aun asi lo hice, deje que pasara, lo permiti a pesar de las consecuencias a pesar de todo a pesar de mi.\nEstoy molesto conmigo por haber permitido que pasara eso, dije que nunca lo haria y deje que pasara hasta la\npeor consecuencia, no he podido ser yo, estoy molesto y no puedo hacer nada por solventarlo me siento partido \nentre dos lados, uno porque queria que pasara y otro en el que no queria que pasara, ahora no se que hacer\nno se que pensar no se que decir me siento mal mas bien culpable. Estos dias no he podido hacer nada \nno dejo de darle vueltas a ese asuento, no se que pensar, es mi culpa y no lo puedo hablar con nadie\nse que la regue, lo unico que se me ocurre es evitar que vuelva a pasar y seguir como si nada hubiera pasado\nseguir diciendo que fue un sueño y ya, esto nunca sucedio.fue tal y como lo habia tenido en mis fantasias\ncada paso que se dio se cumplio, no me gusto del todo el proceso, no fue como lo esperaba, como algo como \nuna prenda puede cambiar todo, se encucio todo.\n\ncomo eliminamos este sentimientos, no es lo mismo es totalmente diferente, no se siente la misma confianza\nla misma intensidad, no se siente ni mejor, se podria decir que es peor, con esto me doy cuenta que me \nidealice esa idea de que seria mejor pero no, es todo lo contrario, lo unico interesante es lo \nllamativo que es algo diferente pero el proceso es diferente. \n\n\n\nestoy molesto, me caga que me empiezan a exijir el pinche dinero como si deberas, que me empiecen a pedir todo\ncomo si yo fuera el responsable de todo lo que pasa aqui, tengo que ver a ximena que haga su tarea explicarle \nlo que no entiende regañarla cuando no hace nada y para que, si ni me hace caso... me caga que me quieran tratar como\nsi tuviera 10 años. estoy arto de que trabajo y trabajo y no me compro la gran cosa ni nada\nme caga que me enjareten cosas que si quiera, se pone bien pinche mamona para exijir que debo comprar la comida una vez al mes\ncomo si deberas. se pone a exijir la colegiatura cuando se supone que ivan fue el que se comprometio. me caga que este wey por \nsu pinche paranoia se ponga a exigir cosas que apague el pinche telefono que configure la pinche red no mamen ya estoy arto de tener\nque estar viendo todo y a todos me caga que todo mundo me empieza a pedir cosas, a pedir esto lo otro ya no mamen\nlo que mas me emputa es que no me queda ni un pinche peso para salirme de aqui. O los mando a la verga y les digo que ya no les \ndare dinero o seguire aqui y todos estan creidos que me quedare a construir aqui. Necesito hacer dinero ya",
+			"settings":
+			{
+				"buffer_size": 3803,
+				"line_ending": "Windows",
+				"name": "quien soy?"
+			}
+		},
+		{
+			"file": "/D/Juan/Documentos/Personal/Pensamientos.txt",
+			"settings":
+			{
+				"buffer_size": 2264,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "https://es.redtube.com/2145145 zapatos\nhttps://es.redtube.com/880899 liston\nhttps://es.redtube.com/346469 late\nhttps://es.redtube.com/10838861 red\n\nhttps://es.pornhub.com/view_video.php?viewkey=ph5ece39e43d204 LINE\nhttps://es.pornhub.com/view_video.php?viewkey=ph5eaef1316eeb5\nhttps://es.pornhub.com/view_video.php?viewkey=ph5e7a000ec37b8\nhttps://es.redtube.com/2393825\n\nhttps://www.youporn.com/watch/14114659/horny-young-secretary-fucks-in-anal-pussy-mouth-with-her-office-boss/\nhttps://www.youporn.com/watch/14541289/anal-creampie-for-sexy-secretary-boss-fucked-her-tight-pussy-and-ass/\nhttps://www.youporn.com/watch/14521745/disciplining-the-pupil-with-cathy-heaven-danny-d-jasmine-jae/\n\nvvvv\n\nhttps://www.youporn.com/watch/15406960/jules-jordan-old-man-wins-the-gianna-dior-auction/\n \t\nhttps://www.youporn.com/watch/15332127/deeper-sexy-maid-autumn-falls-recevies-an-unforgettable-bonus/\nhttps://www.youporn.com/watch/14246533/blair-williams-tied-up-abused-by-cock/\nhttps://www.youporn.com/watch/10083791/bdsm-xxx-big-breasted-sub-loves-sensual-hardcore-treatment/\nhttps://www.youporn.com/watch/15407806/he-fuck-me-so-good-in-my-ass-little-caprice/\nhttps://www.youporn.com/watch/14044379/dildo-the-day-away-bluebird-films/\nhttps://www.youporn.com/watch/9503195/strapon-beautiful-women-fucking-a-guy-in-the-ass-with-strap-on-cock/\n\nhttps://es.pornhub.com/view_video.php?viewkey=ph5dff9e6734c26  seamed\nhttps://es.pornhub.com/view_video.php?viewkey=ph5af2969fcf372\n\n\n\n\n\nhttps://www.youporn.com/watch/13769871/seduced-into-femdom/\nhttps://www.youporn.com/watch/13618157/my-cum-eating-pantyhose-bitch/\nhttps://www.youporn.com/watch/10633909/russian-mistress-linda/\nhttps://www.youporn.com/watch/15632098/horny-teen-ride-on-my-cock/\nhttps://www.youporn.com/watch/14735827/horny-teen-get-fucked-by-best-friend-from-college/\nhttps://www.youporn.com/watch/14735203/tinder-date-horny-teen-first-anal/\nhttps://www.youporn.com/watch/15430352/my-office-secretary-cheats-boyfriend-4k/\nhttps://www.youporn.com/watch/14720789/my-horny-secretary-always-give-me-a-pleasure/\nhttps://www.youporn.com/watch/14312631/girlsrimming-fifty-shades-of-rimming-vinna-reed/\nhttps://www.youporn.com/watch/14358403/girlsrimming-threesome-rimjob-exploitation/\nhttps://www.youporn.com/watch/14931449/latex-mistress-stiletto-feet-worship-and-hard-strapon-fucking/\nhttps://www.youporn.com/watch/15429926/deutsche-domina-german-femdom-big-tits-milf-first-time-slave-userdate-casting/\nhttps://www.youporn.com/watch/15265665/astro-domina-bondage-mayhem-part-1-rope-bdsm/\nhttps://www.youporn.com/watch/11200023/sexy-mistress-uses-her-slave-boys-cock-for-her-own-pleasure/\nhttps://www.youporn.com/watch/15340191/ass-worship-refresher-training/\nhttps://www.youporn.com/watch/15071071/german-young-bdsm-femdom-teen-facesitting-and-piss-at-sklave-in-latex/\nhttps://www.youporn.com/watch/14785129/femdom-milf-julia-ann-orders-leashed-boy-toy-to-eat-her-out/\nhttps://www.youporn.com/watch/14785129/femdom-milf-julia-ann-orders-leashed-boy-toy-to-eat-her-out/\nhttps://www.youporn.com/watch/13536837/busty-milf-julia-ann-makes-foot-boy-lick-her-feet/\nhttps://www.youporn.com/watch/15071765/little-pussy-wants-to-fuck-full/\nhttps://www.youporn.com/watch/14493159/boss-fucks-hot-secretary-until-she-squirts/\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d21c9c327804\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d332be4ee487\nhttps://es.pornhub.com/view_video.php?viewkey=ph5c236784e46b5\nhttps://es.pornhub.com/view_video.php?viewkey=ph5e25db818fbac\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d8d02344266f\nhttps://es.redtube.com/317479\nhttps://es.redtube.com/182927\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d4abb2b1f1b8\nhttps://es.pornhub.com/view_video.php?viewkey=ph5e9c7ac411d64\nhttps://es.pornhub.com/view_video.php?viewkey=ph5e25db818fbac\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d0a41adc8745\nhttps://es.pornhub.com/view_video.php?viewkey=ph5e9c7ac411d64\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d25d48e876da\nhttps://es.pornhub.com/view_video.php?viewkey=ph5e9de86bec499\nhttps://es.pornhub.com/view_video.php?viewkey=ph5c5d6787b29cc\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d1ee911c2a26\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d55c1df14b4c\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d1f5a14e2706\nhttps://es.pornhub.com/view_video.php?viewkey=ph5929a68bd269c\nhttps://es.pornhub.com/view_video.php?viewkey=ph5b9baf953bde4\nhttps://es.pornhub.com/view_video.php?viewkey=ph5b28a84798f98\nhttps://es.pornhub.com/view_video.php?viewkey=ph59ed147ab84a4\nhttps://es.pornhub.com/view_video.php?viewkey=ph5ef000a73e058\nhttps://es.pornhub.com/view_video.php?viewkey=ph5ecd0b6da1fe4\nhttps://es.pornhub.com/view_video.php?viewkey=ph5e9c7ac3e522b\nhttps://es.pornhub.com/view_video.php?viewkey=ph5c279c1c11b6f\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d7a8459e00b9\nhttps://es.pornhub.com/view_video.php?viewkey=ph5ab02899d1b84\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d9799cb9fce5\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d4abb2b1f1b8\nhttps://es.pornhub.com/view_video.php?viewkey=ph5e25d3a20d84d\nhttps://es.pornhub.com/view_video.php?viewkey=ph5e806714d41eb\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d6561be4bc7b\nhttps://es.pornhub.com/view_video.php?viewkey=ph5c8ca6a6880ee\nhttps://es.pornhub.com/view_video.php?viewkey=ph5cf3b24a2cdea\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d235e4f2b3c0\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d17433e03f14\nhttps://es.pornhub.com/view_video.php?viewkey=ph5c236784e46b5\n\n\n\nhttps://es.pornhub.com/view_video.php?viewkey=ph5d235e4f2b3c0\nhttps://es.pornhub.com/view_video.php?viewkey=ph59374b9db783a\n\n\n\nhttps://www.xvideos.com/video26438367/unusual_peach_gets_cumshot_on_her_face_swallowing_all_the_cum\nhttps://www.xvideos.com/video23873604/taboo-submissive_rose_valerie_anal_fisting_and_hardcore_ass_fuck\nhttps://www.xvideos.com/video19397981/jayden_wife\nhttps://www.xvideos.com/video27469373/exotic4k_soaking_wet_pussy_fucked_with_fishnet_busty_aaliyah_hadid\nhttps://www.xvideos.com/video29663629/babes_-_office_obsession_-_the_measure_of_a_man_starring_kai_taylor_and_stella_cox_clip\nhttps://www.xvideos.com/video27015487/big_booty_brunette_busty_teen_aaliyah_hadid_in_stockings\nhttps://www.xvideos.com/video15354221/angela_sommers_with_jessica_jaymes_eating_pussy_in_lesbian_sex\nhttps://www.xvideos.com/video26495101/zafira_robocock\nhttps://www.xvideos.com/video34335691/submissive_nympho_rose_valerie_begs_for_anal_fisting_and_pee_treat\n\n\nhttps://es.pornhub.com/view_video.php?viewkey=ph5f509fc91cca8",
+			"settings":
+			{
+				"buffer_size": 6587,
+				"line_ending": "Windows",
+				"name": "https://es.redtube.com/2145145 zapatos"
+			}
+		},
+		{
+			"file": "/D/Documentos/orgadi_v3_20201209_2001.sql",
+			"settings":
+			{
+				"buffer_size": 10535,
+				"line_ending": "CR"
+			}
+		},
+		{
+			"contents": "judith32..,\n\nGabo32jj\nJudith32",
+			"settings":
+			{
+				"buffer_size": 30,
+				"line_ending": "Windows",
+				"name": "judith32..,"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"isntall",
+				"Package Control: Install Package"
+			],
+			[
+				"isnta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"packag",
+				"Preferences: Browse Packages"
+			],
+			[
+				"package",
+				"Preferences: Browse Packages"
+			],
+			[
+				"int",
+				"Install Package Control"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 157.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/ProyectosPhp/CursoApiRest/apirest",
+		"/D/ProyectosPhp/CursoApiRest/apirest/app",
+		"/D/ProyectosPhp/CursoApiRest/apirest/app/Models",
+		"/D/ProyectosPhp/CursoApiRest/apirest/database",
+		"/D/ProyectosPhp/CursoApiRest/apirest/database/factories",
+		"/D/ProyectosPhp/CursoApiRest/apirest/database/seeders",
+		"/D/ProyectosPhp/CursoApiRest/apirest/public",
+		"/D/ProyectosPhp/CursoApiRest/apirest/public/img"
+	],
+	"file_history":
+	[
+		"/D/ProyectosPhp/CursoApiRest/apirest/app/Models/Transaction.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/database/migrations/2020_12_11_070315_category_product_table.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/database/migrations/2020_12_11_055740_create_categories_table.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/database/migrations/2020_12_11_055709_create_products_table.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/database/migrations/2020_12_11_055726_create_transactions_table.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/database/migrations/2014_10_12_000000_create_users_table.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/app/Providers/AppServiceProvider.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/app/Models/Seller.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/app/Models/Product.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/app/Models/Category.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/app/Models/Buyer.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/app/Models/User.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/routes/api.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/app/Providers/RouteServiceProvider.php",
+		"/D/ProyectosPhp/CursoApiRest/apirest/.env",
+		"/C/Users/JuanGB/AppData/Roaming/Sublime Text 3/Packages/User/PHP Companion.sublime-settings",
+		"/C/Users/JuanGB/AppData/Roaming/Sublime Text 3/Packages/PHP Companion/PHP Companion.sublime-settings",
+		"/D/ProyectosPhp/CursoApiRest/apirest/vendor/laravel/framework/src/Illuminate/Auth/MustVerifyEmail.php",
+		"/C/Users/JuanGB/Homestead/Homestead.yaml",
+		"/D/ProyectosPhp/CursoApiRest/apirest/public/web.config",
+		"/D/ProyectosPhp/CursoApiRest/apirest/public/index.php",
+		"/D/Dropbox/Dropbox/proyectos/Orgadi3.0/DIseño/Ejemplos.txt",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/C/Users/JuanGB/Downloads/hosts",
+		"/C/xampp/php/php.ini",
+		"/C/php_7.4/php.ini-production",
+		"/C/php_7.4/php.ini-development",
+		"/C/xampp/php/README.md",
+		"/D/Documentos/orgadi_v3_20201209_2001.sql",
+		"/C/apache-maven-3.6.0/conf/settings.xml",
+		"/C/jdevs/Orgadi/orgadi/storage/logs/laravel.log",
+		"/C/Users/JuanGB/Downloads/plantilla1.jrxml",
+		"/C/jdevs/Orgadi/orgadi/resources/views/welcome.blade.php",
+		"/C/jdevs/Orgadi/testProd/orgadi/storage/logs/laravel.log",
+		"/C/jdevs/Orgadi/testProd/orgadi/resources/views/welcome.blade.php",
+		"/C/jdevs/Orgadi/OrgadiFront/orgadi/build/testing/Orgadi/index.html",
+		"/C/jdevs/Orgadi/testProd/orgadi/public/resources/url.js",
+		"/C/jdevs/Orgadi/OrgadiFront/orgadi/index.html",
+		"/C/jdevs/Orgadi/testProd/orgadi/public/index.php",
+		"/C/Users/JuanGB/Downloads/resetEvalIntellij.bat",
+		"/C/Users/JuanGB/Downloads/Factorize.java",
+		"/C/jdevs/Orgadi/prod/orgadi/.env",
+		"/D/Software/eclipse/Personas/otras/otras/CH.TXT",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Model/Dto/AddCategoryPageResponse.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Model/Dto/GetAccountPageResponse.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Model/Dto/AbstractDataTransferObject.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Controllers/Impl/Api/RecordController.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Model/Dto/AbstractDataTransferObjectResponse.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Persistency/Entities/Account.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Controllers/Impl/Api/AccountController.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Model/Dto/GetAccountsRequest.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Model/Dto/AbstractDataTransferObjectRequest.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Model/Dto/AccountDTO.php",
+		"/C/jdevs/Orgadi/poc/poc/app/Http/Controllers/ArticleController.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Bo/Impl/AccountPageBOImpl.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Bo/AbstractBO.php",
+		"/D/Dropbox/Dropbox/proyectos/orgaditest/app/Controllers/Impl/pages/AccountController.php",
+		"/C/jdevs/Orgadi/poc6/orgadi/app.json",
+		"/C/jdevsOrgadipoc7/workspace.json",
+		"/C/jdevsOrgadipoc7/app.json",
+		"/C/jdevsOrgadipoc7/build.xml",
+		"/C/jdevs/Orgadi/orgadi/public/index.php",
+		"/D/Dropbox/Dropbox/proyectos/Orgadi3.0/DIseño/OrgadiV3_20200416_1133.sql",
+		"/C/jdevs/Orgadi/poc/poc/storage/logs/laravel.log",
+		"/C/jdevs/Orgadi/jj/orgadi/README.md",
+		"/C/jdevs/Orgadi/orgadi/README.md",
+		"/C/jdevs/Orgadi/jj/orgadi/.gitignore",
+		"/C/jdevs/Orgadi/poc3/myapp/database/migrations/2014_10_12_000000_create_users_table.php",
+		"/C/jdevs/Orgadi/poc3/myapp/database/seeds/UsersTableSeeder.php",
+		"/C/jdevs/Orgadi/poc3/myapp/app/User.php",
+		"/C/jdevs/Orgadi/poc3/myapp/.env",
+		"/C/Users/JuanGB/Downloads/themeforest-rlsLpMri-arrowit-technology-digital-transformation-wordpress-theme/ArrowIT-full-files-and-documentation-1.2.4/import/data/customizer.dat",
+		"/D/Juan/Backups/lg_g6_20200417_1630/.bancomer/.configPublicDataFile.bks",
+		"/D/Juan/Backups/lg_g6_20200417_1630/didi/a3_dir/a3_psnger_encrypt_br",
+		"/C/jdevs/CuadrasCuadradas/CuadrasCuadradas/data/users.jj",
+		"/C/Users/JuanGB/Downloads/vhdl/vhdl/flujo.vhd",
+		"/C/jdevs/CuadrasCuadradas/CuadrasCuadradas/.settings/org.eclipse.m2e.core.prefs",
+		"/C/jdevs/CuadrasCuadradas/CuadrasCuadradas/.settings/org.eclipse.jdt.core.prefs",
+		"/C/jdevs/CuadrasCuadradas/CuadrasCuadradas/.settings/org.eclipse.jdt.apt.core.prefs",
+		"/C/jdevs/CuadrasCuadradas/CuadrasCuadradas/.classpath",
+		"/C/jdevs/CuadrasCuadradas/CuadrasCuadradas/.project",
+		"/C/jdevs/CuadrasCuadradas/CuadrasCuadradas/datausers.jj",
+		"/C/jdevs/CuadrasCuadradas/CuadrasCuadradas/.gitignore",
+		"/F/Juan/Cursos/Ensamblador/reloj1750/RELOJ.ASM",
+		"/D/Documentos/OrgadiV3_20911108_1528.sql",
+		"/D/Documentos/OrgadiV3_2091118_1528.sql",
+		"/C/Users/JuanGB/Downloads/orgadiv3_dev1.sql",
+		"/C/Users/JuanGB/Downloads/vhdl/vhdl/Fx.vhd",
+		"/E/respaldomiix700_sep2018/Deitel 5/Elevador/com/deitel/cpej5/elevador/EjemploPracticoElevador.java",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/no clasificados/graphics/prueba.c",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/no clasificados/asm reloj/reloj.asm",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/no clasificados/asm dentro de c/prueba.c",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/Pamn/pamnT/arreglo de apuntadores/arreglo.c",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/Pamn/proyecto agenda/programa/funciones/apLogin.c",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/Pamn/proyecto agenda/programa/funciones/login.c",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/Pamn/proyecto agenda/programa/funciones/verificarDatos.c",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/Pamn/proyecto agenda/programa/agenda.c",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/Pamn/proyecto agenda/programa/usuarios/gabo32/agenda.jj",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/Pamn/proyecto agenda/programa/usuarios/gabo32/datos.jj",
+		"/E/Juan/Codigos/noClasificados/hechos/Proyectos c/archivosC/Pamn/proyecto agenda/agenda desarrollo de software/ListaFunciones.c",
+		"/C/jprojects/backup/InvoiceControl_20190418_0853_cambiando arquitectura/BackEnd/IControlMenuReposiroty/src/main/java/com/gabo32/invoice/core/repository/menu/controller/MenuCampoController.java",
+		"/C/jprojects/backup/InvoiceControl_20190418_0853_cambiando arquitectura/BackEnd/IControlGenericDao/src/main/java/com/gabo32/invoice/dao/entity/impl/Rol.java",
+		"/C/jprojects/backup/InvoiceControl_20190418_0853_cambiando arquitectura/BackEnd/IControlGenericDao/src/main/java/com/gabo32/invoice/dao/controller/GenericDaoController.java",
+		"/C/Users/JuanGB/Downloads/queryparam-example-in-rest-web-service/RestWB/src/main/java/com/concretepage/rest/Student.java",
+		"/C/Users/JuanGB/Downloads/queryparam-example-in-rest-web-service/RestWB/src/main/java/com/concretepage/rest/StudentService.java",
+		"/C/jprojects/backup/InvoiceControl_20190418_0853_cambiando arquitectura/BackEnd/IControlGenericDao/src/main/java/com/gabo32/invoice/dao/entity/impl/ArchivoBinario.java",
+		"/C/jprojects/InvoiceControl/BackEnd/IControlMenu/src/main/java/com/gabo32/invoice/back/menu/controller/impl/MenuControllerImpl.java",
+		"/C/jprojects/bnet/iceParametrizacionServices/src/main/java/com/gnp/iceParametrizacionServices/application/controllers/parametrosproducto/ParametrosProductoController.java",
+		"/C/jprojects/bnet/iceParametrizacionServices/src/main/java/com/gnp/iceParametrizacionServices/application/controllers/bloques/BloquesController.java",
+		"/C/jprojects/bnet/iceParametrizacionServices/src/main/java/com/gnp/ice/parametrizacion/serviciosgenericos/controller/ServiciosGenericosController.java",
+		"/C/jprojects/bnet/iceParametrizacionServices/src/main/java/com/gnp/iceParametrizacionServices/application/controllers/editor/functions/dto/FunctionRequest.java",
+		"/C/jprojects/bnet/iceParametrizacionServices/src/main/java/com/gnp/iceParametrizacionServices/application/controllers/editor/functions/EditorFunctions.java",
+		"/C/jprojects/tesisjgb/microservices/backend/CatalogoService/src/main/java/com/gabo32/invoice/core/catalogoservice/controller/CatalogoController.java",
+		"/C/jprojects/InvoiceControl/BackEnd/IControlMenu/pom.xml",
+		"/C/jprojects/tesisjgb/microservices/backend/CatalogoService/src/main/resources/bootstrap.yml",
+		"/C/jprojects/tesisjgb/microservices/backend/CatalogoService/src/main/java/com/gabo32/invoice/core/catalogoservice/CatalogoServiceApplication.java",
+		"/C/jprojects/tesisjgb/microservices/backend/CatalogoService/src/main/resources/application.properties",
+		"/C/jprojects/InvoiceControlConfig/icontrolEdgeServer.yml",
+		"/C/jprojects/InvoiceControlConfig/authserver.yml",
+		"/C/jprojects/InvoiceControlConfig/database.properties",
+		"/D/Fotos/otras/otras/CH.TXT",
+		"/D/Proyectos/BlackEcco/blacknet/backup/02-02-2016(server_local).backup",
+		"/D/Proyectos/BlackEcco/blacknet/V_2.0_scrip_DB.sql",
+		"/C/Users/JuanGB/Downloads/YosTop/YosTop/Numero de contacto 1.lqm",
+		"/C/Users/JuanGB/Downloads/icontrol_all.sql",
+		"/C/Users/JuanGB/Downloads/spring-boot-data-jpa-5-security-jpa (1)/spring-boot-data-jpa/src/main/java/com/bolsadeideas/springboot/app/controllers/LoginController.java",
+		"/C/Users/JuanGB/Downloads/Timbrador/Timbrador/src/main/resources/log4j.xml",
+		"/C/Users/JuanGB/Downloads/themeforest-13080328-limitless-responsive-web-application-kit/Limitless_2_1/Bootstrap 4/Template/layout_1/LTR/default/full/login_tabbed.html"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 187.0,
+		"where_history":
+		[
+			"C:\\jprojects\\backup",
+			"C:\\jprojects",
+			"C:\\Users\\JuanGB\\Downloads\\spring-boot-data-jpa-5-security-jpa (1)\\spring-boot-data-jpa"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"');\n",
+			"']]);",
+			"extension_di",
+			"extension",
+			"PHPIniDir",
+			"PHPIniDir}",
+			"PHPIniDir",
+			"ext",
+			"inidi",
+			"auto_incre",
+			"currency_id",
+			"`fk_account_category_person_1` ",
+			"person_id",
+			"person",
+			"default_curre",
+			"default",
+			"auto_incre",
+			"auto",
+			"localre",
+			"ZFieldStyle",
+			"report_coun",
+			"<?",
+			"getMainView",
+			"setMainView",
+			"getCurrentProfile",
+			"output",
+			"ext.dir",
+			"dir",
+			"ext.dir",
+			"outp",
+			"accountService",
+			"usuario",
+			"user",
+			"/",
+			"persona",
+			"CREATE",
+			"GenericResponse",
+			"comprobante",
+			"roles",
+			"repository",
+			"jpa",
+			"$10$QHMY0T6o2vTs9iuo75SC/eqpGqK5jlFw8yS19iJcmv8aKpkRuEANC",
+			"\">\n",
+			"jpg",
+			"hib"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "database/factories/UserFactory.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1136,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								872,
+								872
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/Models/User.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1448,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								514,
+								514
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "database/factories/CategoryFactory.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 551,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								531,
+								531
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "database/factories/ProductFactory.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 946,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								902,
+								902
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "database/factories/TransactionFactory.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 800,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								555,
+								555
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "database/seeders/DatabaseSeeder.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1101,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								590,
+								590
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": ".env",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 947,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								217,
+								217
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 15,
+			"sheets":
+			[
+				{
+					"buffer": 7,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2920,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2877,
+								2877
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 115.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 195,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								133,
+								133
+							]
+						],
+						"settings":
+						{
+							"auto_name": "guess_net_24  RDKC2SgU88HbXz",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 90,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								89,
+								89
+							]
+						],
+						"settings":
+						{
+							"auto_name": "100 medicina",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11,
+								11
+							]
+						],
+						"settings":
+						{
+							"auto_name": "9",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/D/Dropbox/Dropbox/links.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1264,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								703,
+								672
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 844,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								130,
+								130
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Mi recuerdo más feliz",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 938,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								937,
+								937
+							]
+						],
+						"settings":
+						{
+							"auto_name": "================================",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4236,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								871,
+								871
+							]
+						],
+						"settings":
+						{
+							"auto_name": "composer global require laravel/installer -- indic",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "/D/Dropbox/Dropbox/proyectos/orgaditest/resources/views/app/account.twig",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 24267,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								23126,
+								23126
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 81797.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 510,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								199,
+								199
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Piera",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 52,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								52,
+								52
+							]
+						],
+						"settings":
+						{
+							"auto_name": "g3*F6iGmO",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 585,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								181,
+								181
+							]
+						],
+						"settings":
+						{
+							"auto_name": "==cuentas por cobrar==",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 21,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3803,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3803,
+								3803
+							]
+						],
+						"settings":
+						{
+							"auto_name": "quien soy?",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 67.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "/D/Juan/Documentos/Personal/Pensamientos.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2264,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1000,
+								1000
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 21,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6587,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1466,
+								1466
+							]
+						],
+						"settings":
+						{
+							"auto_name": "https://es.redtube.com/2145145 zapatos",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 22,
+					"type": "text"
+				},
+				{
+					"buffer": 22,
+					"file": "/D/Documentos/orgadi_v3_20201209_2001.sql",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10535,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2786,
+								2796
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/SQL/SQL.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 2229.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 23,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 30,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								30,
+								30
+							]
+						],
+						"settings":
+						{
+							"auto_name": "judith32..,",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 23,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.829636304063,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.sftp":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "apirest.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 394.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
