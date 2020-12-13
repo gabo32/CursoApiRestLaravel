@@ -23,6 +23,10 @@ class Category extends Model
         'description'
     ];
 
+    protected $hidden = [
+        'pivot'
+    ];
+
     /**
     * relaciones
     * pertenece a muchos

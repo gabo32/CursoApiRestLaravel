@@ -31,6 +31,10 @@ class Product extends Model
         'seller_id'
     ];
 
+    protected $hidden = [
+        'pivot'
+    ];
+
 
     /**
     * Valida si el producto esta disponible o no

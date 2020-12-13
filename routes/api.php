@@ -18,9 +18,16 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 });*/
 Route::resource('buyers', 'buyer\BuyerController', ['only'=> ['index','show']]);
+Route::resource('buyers.categories', 'buyer\BuyerCategoryController', ['only'=> ['index']]);
+Route::resource('buyers.products', 'buyer\BuyerProductController', ['only'=> ['index']]);
+Route::resource('buyers.sellers', 'buyer\BuyerSellerController', ['only'=> ['index']]);
 Route::resource('buyers.transactions', 'buyer\BuyerTransactionController', ['only'=> ['index']]);
 
 Route::resource('categories', 'category\CategoryController', ['except'=> ['create','edit']]);
+Route::resource('categories.buyers', 'category\CategoryBuyerController', ['only'=> ['index']]);
+Route::resource('categories.products', 'category\CategoryProductController', ['only'=> ['index']]);
+Route::resource('categories.transactions', 'category\CategoryTransactionController', ['only'=> ['index']]);
+Route::resource('categories.sellers', 'category\CategorySellerController', ['only'=> ['index']]);
 
 Route::resource('products', 'product\ProductController', ['only'=> ['index','show']]);
 
