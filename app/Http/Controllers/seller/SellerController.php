@@ -17,7 +17,8 @@ class SellerController extends ApiController
     public function index()
     {
         //los usuarios que tengan al menos una transaccion
-        $vendedores = Seller::has('products')->get();
+        //$vendedores = Seller::has('products')->get();
+        $vendedores = Seller::all();
 
         return $this->showAll($vendedores);
     }
@@ -28,11 +29,9 @@ class SellerController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Seller $seller)
     {
-        $vendedor = Seller::has('products')->findOrFail($id);
-
-        return $this->showOne($vendedores,201);      
+        return $this->showOne($seller);      
     }
 
 
