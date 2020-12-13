@@ -6,13 +6,16 @@ use App\Models\Seller;
 use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     const PRODUCTO_DISPONIBLE = 'disponible';
     const PRODUCTO_NO_DISPONIBLE = 'no disponible';
+
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
