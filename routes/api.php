@@ -49,3 +49,4 @@ Route::resource('sellers.transactions', 'seller\SellerTransactionController', ['
 Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]);
 //rutas fluidas
 Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');
+Route::name('resend')->get('users/{user}/resend', 'User\UserController@resend');

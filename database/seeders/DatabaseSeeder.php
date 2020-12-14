@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
     	//borrar la base de datos
     	DB::statement('SET FOREIGN_KEY_CHECKS = 0');
     	DB::table('users')->delete();
@@ -26,6 +27,13 @@ class DatabaseSeeder extends Seeder
     	DB::table('transactions')->delete();
     	DB::table('category_product')->delete();;
     	DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
+        //desactivar eventos para evitar mandar miles de correos
+        User::flushEventListeners();
+        Category::flushEventListeners();
+        Product::flushEventListeners();
+        Transaction::flushEventListeners();
+
 
         \App\Models\User::factory(1000)->create();
         \App\Models\Category::factory(30)->create();
