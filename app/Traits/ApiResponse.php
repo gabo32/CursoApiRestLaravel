@@ -23,6 +23,7 @@ trait ApiResponse
 		}
 
 		$transformer = $collection->first()->transformer;
+		$collection = $this->filterData($collection, $transformer);
 		$collection = $this->sortData($collection, $transformer);
 		$collection = $this->transformData($collection, $transformer);
 		return $this->successResponse($collection, $code);
@@ -52,5 +53,17 @@ trait ApiResponse
 		$transformation = fractal($data, new $transformer);
 
 		return $transformation->toArray();
+	}
+
+	protected function filterData(Collection $collection, $transformer){
+		foreach (request()->query() as $query => $value) {
+			$attribute = $transformer::originalAttribute($query);
+
+			if( isset($attribute, $value)){
+				$collection = $collection->where($attribute, $value);
+			}
+		}
+
+		return $collection;
 	}
 }
