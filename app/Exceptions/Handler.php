@@ -95,7 +95,7 @@ class Handler extends ExceptionHandler
             if( $codigo == 1451){
                 return $this->errorResponse("No se puede eliminar de forma permanente el recurso porque esta relacionado con algún otro.", 409);
             }
-            return $this->errorResponse($e->getMessage(),$e->getStatusCode());
+            return $this->errorResponse($e->getMessage(), 500);
         } 
 
         if (method_exists($e, 'render') && $response = $e->render($request)) {

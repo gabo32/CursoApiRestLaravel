@@ -47,3 +47,5 @@ Route::resource('sellers.transactions', 'seller\SellerTransactionController', ['
 
 //Route::resource('users', 'user\UserController', ['only'=> ['index','show']]);
 Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]);
+//rutas fluidas
+Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');
