@@ -6,6 +6,7 @@ use Throwable;
 use App\Traits\ApiResponse;
 use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -60,6 +61,16 @@ class Handler extends ExceptionHandler
     {
         if ($e->response) {
             return $e->response;
+        }
+
+        if( $this->isFrontend($request) ){
+            return $request->ajax() ? 
+                response()->json($e, 422): 
+                redirect()
+                    ->back()
+                    ->withInput($request->input())
+                    ->withErrors($e->getMessage())
+                    ;
         }
 
         //return $this->errorResponse($this->invalidJson($request, $e), 422);
@@ -124,6 +135,10 @@ class Handler extends ExceptionHandler
             return $this->convertValidationExceptionToResponse($e, $request);
         }
 
+        if( $e instanceof TokenMismatchException){
+            return redirect()->back()->withInput($request->input());
+        }
+
 
         //obtenemos el archivo config
         if( config('app.debug')){
@@ -143,9 +158,16 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+        if( $this->isFrontend($request)){
+            return redirect()->guest('login');
+        }
         //return $request->expectsJson()
         //            ? response()->json(['message' => $exception->getMessage()], 401)
         //            : redirect()->guest($exception->redirectTo() ?? route('login'));
         return $this->errorResponse('No autenticado', 401);
+    }
+
+    private function isFrontend($request){
+        return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
     }
 }
